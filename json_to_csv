@@ -1,0 +1,41 @@
+import json, urllib, csv
+
+url = 'http://ip-api.com/json/'
+
+ip = input("Ingresa la IP: ")
+
+url_2 = url + ip
+
+print("Escaneando datos....")
+
+req = urllib.request.Request(url_2)
+
+dt = urllib.request.urlopen(req).read()
+
+py = json.loads(dt)
+
+with open('sample_new.json','w', newline = '') as new:
+    json.dump(py, new)
+    
+    
+with open('sample_new.json', newline = '') as r:
+    data = json.load(r)
+    
+h = []
+ro = []
+
+for k,v in data.items():
+    h.append(k)
+    ro.append(v)
+
+with open('sample_json_to_csv.csv', 'w') as f:
+    writer = csv.writer(f, delimiter = '|')
+    writer.writerow(h)
+
+with open('sample_json_to_csv.csv','r+') as test:
+    file = csv.reader(test)
+    w = csv.writer(test, delimiter = '|')
+    for _ in file:
+        if file.line_num > 1:
+            continue
+        w.writerow(ro)
